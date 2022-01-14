@@ -1,0 +1,284 @@
+---
+swagger: "2.0"
+info:
+  version: "2022-01-13T22:59:35Z"
+  title: "jachty"
+host: "jachty.gzabielski.click"
+schemes:
+- "https"
+paths:
+  /:
+    get:
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        type: "http_proxy"
+        httpMethod: "GET"
+        uri: "https://s3.eu-central-1.amazonaws.com/jachty.gzabielski.click/index.html"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+  /dynamodb:
+    get:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "jacht_id"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      security:
+      - jachty:
+        - "email"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:905646890994:function:jachty-dynamodb/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.id: "method.request.querystring.jacht_id"
+        requestTemplates:
+          application/json: "{\r\n     \"id\": \"$input.params('jacht_id')\"\r\n}"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+  /get_jacht_page:
+    get:
+      produces:
+      - "application/json"
+      parameters:
+      - name: "jacht_id"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        type: "http_proxy"
+        httpMethod: "GET"
+        uri: "https://s3.eu-central-1.amazonaws.com/jachty.gzabielski.click/jacht.html"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+  /logged:
+    get:
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        type: "http_proxy"
+        httpMethod: "GET"
+        uri: "https://s3.eu-central-1.amazonaws.com/jachty.gzabielski.click/logged.html"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+  /logging:
+    get:
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        type: "http_proxy"
+        httpMethod: "GET"
+        uri: "https://s3.eu-central-1.amazonaws.com/jachty.gzabielski.click/proxy.html"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+  /reservation:
+    get:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      security:
+      - jachty:
+        - "email"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:905646890994:function:jacht-reservation/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        requestTemplates:
+          application/json: "{\r\n     \"id\": \"$input.params('jacht_id')\"\r\n}"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+    post:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "access_token"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "od"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "do"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "jacht_id"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      security:
+      - jachty:
+        - "email"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:905646890994:function:jacht-reservation/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        requestTemplates:
+          application/json: "{\r\n     \"id\": \"$input.params('jacht_id')\",\r\n\
+            \     \"access_token\": \"$input.params('access_token')\",\r\n     \"\
+            od\": \"$input.params('od')\",\r\n     \"do\": \"$input.params('do')\"\
+            ,\r\n     \"method\": \"post\"\r\n}"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+    delete:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "access_token"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "od"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "do"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "jacht_id"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      security:
+      - jachty:
+        - "email"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:905646890994:function:jacht-reservation/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        requestTemplates:
+          application/json: "{\r\n     \"id\": \"$input.params('jacht_id')\",\r\n\
+            \     \"access_token\": \"$input.params('access_token')\",\r\n     \"\
+            od\": \"$input.params('od')\",\r\n     \"do\": \"$input.params('do')\"\
+            ,\r\n     \"method\": \"delete\"\r\n}"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+  /user:
+    get:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      security:
+      - jachty:
+        - "email"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:905646890994:function:jacht-user/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        requestTemplates:
+          application/json: "{\r\n     \"access_token\": \"$input.params('access_token')\"\
+            \r\n}"
+        passthroughBehavior: "when_no_templates"
+        contentHandling: "CONVERT_TO_TEXT"
+  /user_page:
+    get:
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        type: "http_proxy"
+        httpMethod: "GET"
+        uri: "https://s3.eu-central-1.amazonaws.com/jachty.gzabielski.click/user.html"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+securityDefinitions:
+  jachty:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+    x-amazon-apigateway-authtype: "cognito_user_pools"
+    x-amazon-apigateway-authorizer:
+      type: "cognito_user_pools"
+      providerARNs:
+      - "arn:aws:cognito-idp:eu-central-1:905646890994:userpool/eu-central-1_i1LfwT4u0"
+definitions:
+  Empty:
+    type: "object"
+    title: "Empty Schema"

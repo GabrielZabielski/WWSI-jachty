@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Wypożyczalnia</title>
+    <style>
+        .selector-for-some-widget {
+  box-sizing: content-box;
+}
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.button1 {background-color: #4CAF50;}
+.button2 {background-color: #af4c4c;}
+
+.jacht {
+
+  background-color: lightblue;
+  text-align: center;
+    	position: relative;
+	width: 100%;
+	padding: 5px;
+	border: 5px solid #dddddd
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<script>
+      const queryString = window.location.search;
+      // console.log(queryString);
+      const urlParams = new URLSearchParams(queryString);
+
+      $.ajax({
+          url: '/user',
+          data: {'access_token': urlParams.get('access_token')},
+          beforeSend: function(request) {
+              console.log(urlParams.get('access_token'));
+            request.setRequestHeader("Authorization", urlParams.get('access_token'));
+          },
+          success: function( result, status ) {
+              console.log(result)
+
+              $( "#data" ).html( result.body );
+
+              $( '.cancel' ).click(function(eventData) {
+                  let jacht_id = eventData.currentTarget.id;
+                  let _od = eventData.currentTarget.getAttribute("data-od");
+                  let _do = eventData.currentTarget.getAttribute("data-do");
+
+                  $.ajax({
+                      url: '/reservation?jacht_id='+jacht_id+"&od="+_od+"&do="+_do+"&access_token="+urlParams.get('access_token'),
+                      method: 'delete',
+                      data: {'access_token': urlParams.get('access_token')},
+                      beforeSend: function(request) {
+                          if (window.confirm("Czy na pewno chcesz anulować rezerwację?")) {
+                              request.setRequestHeader("Authorization", urlParams.get('access_token'));
+                              request.setRequestHeader("Content-type", "application/json");
+                          }
+                          else {
+                              throw 'aborted'
+                          }
+                      },
+                      success: function( result, status ) {
+                          window.alert(result.body)
+                          location.reload()
+                      },
+                      error: function ( result, status ) {
+                          console.log(result)
+                          console.log(status)
+                      }
+                    });
+              });
+
+          },
+          error: function ( result, status ) {
+              console.log(result)
+              console.log(status)
+          }
+        });
+
+</script>
+
+<div id='data'></div>
+
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
