@@ -28,3 +28,6 @@ Link do projektu:
 
 #### Diagram
 [Link](https://s3.eu-central-1.amazonaws.com/jachty.gzabielski.click/jachty.html)
+
+#### Swagger documentation
+[Swagger](jachty-any-swagger-apigateway.yaml)
