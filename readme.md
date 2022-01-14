@@ -2,7 +2,7 @@ Gabriel Zabielski
 --
 Grupa: Z707
 
-Link do projektu: 
+<b>Link do projektu: </b>
 (https://jachty.gzabielski.click/)
 
 #### Użyty AWS:

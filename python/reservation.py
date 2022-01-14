@@ -9,7 +9,6 @@ from shared.common_functions import get_jacht, get_email
 
 
 def lambda_handler(event, context):
-    jacht_id = ""
     if "id" in event.keys():
         jacht_id = event["id"]
     else:
