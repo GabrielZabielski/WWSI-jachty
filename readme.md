@@ -14,13 +14,13 @@ Link do projektu:
       1. (S3) serwuje statyczny kontent, 
       2. (Lambda Functions) proxy + mapowanie parametrów
       3. (Cognito) Kontrola dostępu - weryfikacja `access_token`
-   2. Wystawienie zintegrowanych serisów (jako endpointy) do publicznego internetu
+   2. Wystawienie zintegrowanych serisów (jako REST API) do publicznego internetu
 3. S3 - przechowywanie statycznego kontentu
 4. Lambda Functions:
    1. Wykonywanie kodu python'owego
    2. Komunikacja z DynamoDB
 5. DynamoDB - nosql Amazona
-6. Route 53 - DNS
+6. Route 53 - DNS (przekierowanie na API Gateway)
 
 #### Niektóre endpointy wymagają autoryzacji - Jak działa autoryzacja:
 1. `Authorization` header z przypisanym mu `access_token` musi znaleźć się w zapytaniu 
