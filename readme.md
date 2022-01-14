@@ -2,6 +2,9 @@ Gabriel Zabielski
 --
 Grupa: Z707
 
+Link do projektu: 
+(https://jachty.gzabielski.click/)
+
 #### Użyty AWS:
 1. Cognito:
    1. Dostarcza wszystkie funkcje związane z zarządzaniem użytkownikami - rejestracja, logowanie i autoryzacja
